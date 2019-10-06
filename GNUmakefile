@@ -1,9 +1,12 @@
 CC = gcc
-OBJECTS = main.o chunk.o memory.o debug.o value.o
+OBJECTS = main.o chunk.o memory.o debug.o value.o vm.o
 
 main: $(OBJECTS)
 	$(CC) -o main $(OBJECTS)
 
+
+vm.o: vm.c vm.h
+	$(CC) -c vm.c
 value.o: value.c value.h memory.h
 	$(CC) -c value.c
 debug.o: debug.c debug.h
