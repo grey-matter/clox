@@ -1,2 +1,4 @@
+*.c~
+*.h~
+.vscode/
 *.o
-main
