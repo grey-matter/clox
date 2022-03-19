@@ -23,7 +23,9 @@ Token makeToken(TokenType type) {
     ret.tokenType = type;
     ret.length = (int)(scanner.current - scanner.start);
     ret.start = scanner.start;
+    return ret;
 }
+
 Token errorToken(const char* msg) {
     Token ret;
     ret.start = msg;
@@ -171,7 +173,6 @@ Token identifier() {
     while (isAlpha(peek()) || isDigit(peek()) || peek() == '_') {
         advance();
     }
-
     return makeToken(identifierType());
 }
 
@@ -222,4 +223,9 @@ Token scanToken() {
     }
     return errorToken("Unexpected character.");
 
+}
+
+void initScanner(const char* source) {
+    scanner.start = scanner.current = source;
+    scanner.line = 1;
 }

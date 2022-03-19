@@ -1,11 +1,11 @@
 CC = gcc
-OBJECTS = main.o chunk.o memory.o debug.o value.o vm.o
+OBJECTS = main.o chunk.o memory.o debug.o value.o vm.o compiler.o scanner.o
 
 main: $(OBJECTS)
 	$(CC) -o main $(OBJECTS)
 
 
-vm.o: vm.c vm.h
+vm.o: vm.c vm.h compiler.h
 	$(CC) -c vm.c
 value.o: value.c value.h memory.h
 	$(CC) -c value.c
@@ -17,6 +17,11 @@ chunk.o: chunk.c chunk.h memory.h value.h
 	$(CC) -c chunk.c
 memory.o: memory.c common.h memory.h
 	$(CC) -c memory.c
+compiler.o: compiler.c compiler.h scanner.h
+	$(CC) -c compiler.c
+scanner.o: scanner.c scanner.h
+	$(CC) -c scanner.c
+
 
 clean:
 	rm $(OBJECTS)

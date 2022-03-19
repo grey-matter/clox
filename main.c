@@ -7,37 +7,6 @@
 #include "debug.h"
 #include "vm.h"
 
-void testVM() {
-	initVM();
-	Chunk chunk;
-	initChunk(&chunk);
-
-	int address = addConstant(&chunk, 1.2);
-	writeChunk(&chunk, OP_CONSTANT);
-	writeChunk(&chunk, address);
-
-	address = addConstant(&chunk, 1.4);
-	writeChunk(&chunk, OP_CONSTANT);
-	writeChunk(&chunk, address);
-
-	address = addConstant(&chunk, 1.6);
-	writeChunk(&chunk, OP_CONSTANT);
-	writeChunk(&chunk, address);
-
-	address = addConstant(&chunk, 1.8);
-	writeChunk(&chunk, OP_CONSTANT);
-	writeChunk(&chunk, address);
-
-	writeChunk(&chunk, OP_NEGATE);
-	writeChunk(&chunk, OP_ADD);
-	writeChunk(&chunk, OP_MULTIPLY);
-	writeChunk(&chunk, OP_DIVIDE);
-	writeChunk(&chunk, OP_RETURN);
-
-	interpret(&chunk);
-	freeVM();
-}
-
 void repl() {
 	char line[1024];
 	while (1) {
@@ -53,7 +22,7 @@ char* readFile(const char* path) {
 	FILE* file = fopen(path, "rb");
 	
 	if (!file) {
-		fprint(stderr, "Could not open file: %s\n", path);
+		fprintf(stderr, "Could not open file: %s\n", path);
 		exit(65);
 	}
 
@@ -85,7 +54,6 @@ void runFile(const char* path) {
 }
 
 int main(int argc, const char* argv[]) {
-	// testVM();
 	if (argc == 1) {
 		repl();
 	} else if (argc == 2) {
