@@ -17,7 +17,7 @@ typedef struct {
 
 Scanner scanner;
 
-Token makeToken(TokenType type) {
+static Token makeToken(TokenType type) {
     Token ret;
     ret.line = scanner.line;
     ret.tokenType = type;
@@ -26,7 +26,7 @@ Token makeToken(TokenType type) {
     return ret;
 }
 
-Token errorToken(const char* msg) {
+static Token errorToken(const char* msg) {
     Token ret;
     ret.start = msg;
     ret.length = (int)strlen(msg);
@@ -35,16 +35,16 @@ Token errorToken(const char* msg) {
     return ret;
 }
 
-bool isAtEnd() {
+static bool isAtEnd() {
     return *scanner.start == '\0';
 }
 
 
-char advance() {
+static char advance() {
     return *scanner.current++;
 }
 
-bool match(char expected) {
+static bool match(char expected) {
     if (isAtEnd() || *scanner.current != expected) {
         return false;
     }
@@ -52,17 +52,18 @@ bool match(char expected) {
     return true;
 }
 
-char peek() {
+static char peek() {
     return *scanner.current;
 }
-char peekNext() {
+
+static char peekNext() {
     if (isAtEnd()) {
         return '\0';
     }
     return *(scanner.current + 1);
 }
 
-void skipWhiteSpace() {
+static void skipWhiteSpace() {
     while (true) {
         char c = peek();
         switch (c) {
@@ -90,7 +91,7 @@ void skipWhiteSpace() {
 }
 
 
-Token string() {
+static Token string() {
     while (!isAtEnd() && peek() != '"') {
         if (peek() == '\n') {
             scanner.line++;
@@ -105,11 +106,11 @@ Token string() {
 }
 
 
-bool isDigit(char c) {
+static bool isDigit(char c) {
     return c >= '0' && c <= '9';
 }
 
-Token number() {
+static Token number() {
     while (isDigit(peek())) {
         advance();
     }
@@ -124,18 +125,18 @@ Token number() {
     return makeToken(TOKEN_NUMBER);
 }
 
-bool isAlpha(char c) {
+static bool isAlpha(char c) {
     return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';
 }
 
-TokenType checkKeyword(int start, int length, const char* rest, TokenType type) {
+static TokenType checkKeyword(int start, int length, const char* rest, TokenType type) {
     if (length + start == (int)(scanner.current - scanner.start) && !memcmp(scanner.start + start, rest, length)) {
         return type;
     }
     return TOKEN_IDENTIFIER;
 }
 
-TokenType identifierType() {
+static TokenType identifierType() {
     switch (scanner.start[0]) {
         case 'a': return checkKeyword(1, 2, "nd", TOKEN_AND);
         case 'c': return checkKeyword(1, 4, "lass", TOKEN_CLASS);
@@ -169,7 +170,7 @@ TokenType identifierType() {
     return TOKEN_IDENTIFIER;
 }
 
-Token identifier() {
+static Token identifier() {
     while (isAlpha(peek()) || isDigit(peek()) || peek() == '_') {
         advance();
     }

@@ -1,5 +1,5 @@
 CC = gcc
-OBJECTS = main.o chunk.o memory.o debug.o value.o vm.o compiler.o scanner.o
+OBJECTS = main.o chunk.o memory.o debug.o value.o vm.o scanner.o compiler.o
 
 main: $(OBJECTS)
 	$(CC) -o main $(OBJECTS)
