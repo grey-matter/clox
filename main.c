@@ -14,6 +14,9 @@ void repl() {
 		if (!fgets(line, sizeof(line), stdin)) {
 			break;
 		}
+        if (strcmp(line, "q\n") == 0) {
+            break;
+        }
 		interpret(line);
 	}
 }
