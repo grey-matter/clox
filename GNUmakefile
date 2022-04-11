@@ -1,5 +1,5 @@
 CC = gcc
-OBJECTS = main.o chunk.o memory.o debug.o value.o vm.o scanner.o compiler.o
+OBJECTS = main.o chunk.o memory.o debug.o value.o vm.o scanner.o compiler.o object.o
 
 main: $(OBJECTS)
 	$(CC) -o main $(OBJECTS)
@@ -7,7 +7,7 @@ main: $(OBJECTS)
 
 vm.o: vm.c vm.h compiler.h
 	$(CC) -c vm.c
-value.o: value.c value.h memory.h
+value.o: value.c value.h memory.h object.h
 	$(CC) -c value.c
 debug.o: debug.c debug.h
 	$(CC) -c debug.c
@@ -17,10 +17,13 @@ chunk.o: chunk.c chunk.h memory.h value.h
 	$(CC) -c chunk.c
 memory.o: memory.c common.h memory.h
 	$(CC) -c memory.c
-compiler.o: compiler.c compiler.h scanner.h
+compiler.o: compiler.c compiler.h scanner.h object.h
 	$(CC) -c compiler.c
 scanner.o: scanner.c scanner.h
 	$(CC) -c scanner.c
+object.o: object.c object.h memory.h value.h
+	$(CC) -c object.c
+	
 
 
 clean:

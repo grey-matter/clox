@@ -5,7 +5,7 @@
 #include "compiler.h"
 #include "scanner.h"
 #include "chunk.h"
-
+#include "object.h"
 
 typedef struct {
     Token previous;
@@ -58,6 +58,9 @@ static void literal() {
         break;
         case TOKEN_NUMBER:
             emitConstant(NUMBER_VAL(strtod(parser.previous.start, NULL)));
+            break;
+        case TOKEN_STRING:
+            emitConstant(OBJ_VAL(copyString(parser.previous.start + 1, parser.previous.length - 2)));
         break;
     }
 }
@@ -130,7 +133,7 @@ ParseRule rules[] = {
   [TOKEN_LESS]          = {NULL,     NULL,   PREC_NONE},
   [TOKEN_LESS_EQUAL]    = {NULL,     NULL,   PREC_NONE},
   [TOKEN_IDENTIFIER]    = {NULL,     NULL,   PREC_NONE},
-  [TOKEN_STRING]        = {NULL,     NULL,   PREC_NONE},
+  [TOKEN_STRING]        = {literal,     NULL,   PREC_NONE},
   [TOKEN_NUMBER]        = {literal,   NULL,   PREC_NONE},
   [TOKEN_AND]           = {NULL,     NULL,   PREC_NONE},
   [TOKEN_CLASS]         = {NULL,     NULL,   PREC_NONE},
@@ -139,7 +142,7 @@ ParseRule rules[] = {
   [TOKEN_FOR]           = {NULL,     NULL,   PREC_NONE},
   [TOKEN_FUN]           = {NULL,     NULL,   PREC_NONE},
   [TOKEN_IF]            = {NULL,     NULL,   PREC_NONE},
-  [TOKEN_NIL]           = {NULL,     NULL,   PREC_NONE},
+  [TOKEN_NIL]           = {literal,     NULL,   PREC_NONE},
   [TOKEN_OR]            = {NULL,     NULL,   PREC_NONE},
   [TOKEN_PRINT]         = {NULL,     NULL,   PREC_NONE},
   [TOKEN_RETURN]        = {NULL,     NULL,   PREC_NONE},
