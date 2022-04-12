@@ -4,10 +4,13 @@
 #include "memory.h"
 #include "object.h"
 #include "value.h"
+#include "vm.h"
 
 static Obj* allocateObject(size_t sz, ObjType objType) {
     Obj* obj = (Obj*)reallocate(NULL, 0, sz);
     obj->type = objType;
+    obj->next = vm.objects;
+    vm.objects = obj;
     return obj;
 }
 

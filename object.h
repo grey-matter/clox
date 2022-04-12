@@ -4,18 +4,21 @@
 #include "common.h"
 #include "value.h"
 
+// TODO Implement flexible array members: https://en.wikipedia.org/wiki/Flexible_array_member
+
 typedef enum {
-  OBJ_STRING,
+    OBJ_STRING,
 } ObjType;
 
 struct Obj {
-  ObjType type;
+    ObjType type;
+    Obj* next;
 };
 
 struct ObjString {
-  Obj obj;
-  int length;
-  char* chars;
+    Obj obj;
+    int length;
+    char* chars;
 };
 
 static inline bool isObjType(Value value, ObjType type) {

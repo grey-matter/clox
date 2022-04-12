@@ -19,6 +19,7 @@ void repl() {
         }
 		interpret(line);
 	}
+    freeVM();
 }
 
 char* readFile(const char* path) {
@@ -54,6 +55,7 @@ void runFile(const char* path) {
 	char* source = readFile(path);
 	interpret(source);
 	free(source);
+    freeVM();
 }
 
 int main(int argc, const char* argv[]) {

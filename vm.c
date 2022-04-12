@@ -17,9 +17,12 @@ void resetStack() {
 
 void initVM() {
 	resetStack();
+    vm.objects = NULL;
 }
 
-void freeVM() {}
+void freeVM() {
+    freeObjects();
+}
 
 static Value peek(int ind) {
     return *(vm.stackTop - 1 - ind);
